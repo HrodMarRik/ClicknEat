@@ -12,7 +12,20 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form method="post" action="{{ route('categories.store') }}">
                         @csrf
-                        <input type="text" name="name" placeholder="Nom de la catégorie">
+                        <div>
+                            <label for="name">Nom de la catégorie</label>
+                            <input type="text" name="name" placeholder="Nom de la catégorie">
+                        </div>
+                        <div>
+                            <label for="restaurant_id">Restaurant</label>
+                            <select name="restaurant_id">
+                                @foreach($restaurants as $restaurant)
+                                    <option value="{{ $restaurant->id }}">
+                                        {{ $restaurant->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <button type="submit">Créer</button>
                     </form>
                 </div>

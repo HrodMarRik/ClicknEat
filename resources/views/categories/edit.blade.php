@@ -13,7 +13,20 @@
                     <form method="post" action="{{ route('categories.update', $category->id) }}">
                         @csrf
                         @method('PUT')
-                        <input type="text" name="name" value="{{ $category->name }}">
+                        <div>
+                            <label for="name">Nom de la catégorie</label>
+                            <input type="text" name="name" value="{{ $category->name }}">
+                        </div>
+                        <div>
+                            <label for="restaurant_id">Restaurant</label>
+                            <select name="restaurant_id">
+                                @foreach($restaurants as $restaurant)
+                                    <option value="{{ $restaurant->id }}" {{ $category->restaurant_id == $restaurant->id ? 'selected' : '' }}>
+                                        {{ $restaurant->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <button type="submit">Modifier</button>
                     </form>
                 </div>

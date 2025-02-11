@@ -30,7 +30,9 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        Item::create($request->validated());
+        $data = $request->validated();
+        $data['is_active'] = $request->has('is_active');
+        Item::create($data);
         return redirect()->route('items.index');
     }
 
@@ -55,7 +57,9 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        $item->update($request->validated());
+        $data = $request->validated();
+        $data['is_active'] = $request->has('is_active');
+        $item->update($data);
         return redirect()->route('items.index');
     }
 

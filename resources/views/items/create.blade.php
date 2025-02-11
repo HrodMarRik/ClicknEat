@@ -13,7 +13,7 @@
                         @csrf
                         <div>
                             <label for="name">Nom</label>
-                            <input type="text" name="name" placeholder="Nom de l'article">
+                            <input type="text" name="name" placeholder="Nom de l'article" required>
                         </div>
                         <div>
                             <label for="cost">Coût</label>
@@ -21,19 +21,19 @@
                         </div>
                         <div>
                             <label for="price">Prix</label>
-                            <input type="number" name="price" placeholder="Prix de l'article">
+                            <input type="number" name="price" placeholder="Prix de l'article" required>
                         </div>
                         <div>
                             <label for="category_id">Catégorie</label>
-                            <select name="category_id">
+                            <select name="category_id" required>
                                 @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div>
                             <label for="is_active">Actif</label>
-                            <input type="checkbox" name="is_active">
+                            <input type="checkbox" name="is_active" checked>
                         </div>
                         <button type="submit">Créer</button>
                     </form>

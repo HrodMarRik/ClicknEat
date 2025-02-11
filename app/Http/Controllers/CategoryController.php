@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Restaurant;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories.index', ['categories' => Category::all()]);
+        // Pass all categories and restaurants to the view
+        return view('categories.index', [
+            'categories' => Category::all(),
+            'restaurants' => Restaurant::all()
+        ]);
     }
 
     /**
@@ -21,7 +26,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        // Pass all restaurants to the view for selection
+        return view('categories.create', [
+            'restaurants' => Restaurant::all()
+        ]);
     }
 
     /**
@@ -29,6 +37,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        // Create a new category with the request data
         Category::create($request->all());
         return redirect()->route('categories.index');
     }
@@ -38,7 +47,11 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('categories.show', ['category' => $category]);
+        // Pass the specific category and all restaurants to the view
+        return view('categories.show', [
+            'category' => $category,
+            'restaurants' => Restaurant::all()
+        ]);
     }
 
     /**
@@ -46,7 +59,11 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit', ['category' => $category]);
+        // Pass the specific category and all restaurants to the view
+        return view('categories.edit', [
+            'category' => $category,
+            'restaurants' => Restaurant::all()
+        ]);
     }
 
     /**
@@ -54,6 +71,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
+        // Update the category with the request data
         $category->update($request->all());
         return redirect()->route('categories.index');
     }

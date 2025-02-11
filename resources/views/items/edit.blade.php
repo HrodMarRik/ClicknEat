@@ -14,7 +14,7 @@
                         @method('PUT')
                         <div>
                             <label for="name">Nom</label>
-                            <input type="text" name="name" value="{{ $item->name }}">
+                            <input type="text" name="name" value="{{ $item->name }}" required>
                         </div>
                         <div>
                             <label for="cost">Coût</label>
@@ -22,17 +22,21 @@
                         </div>
                         <div>
                             <label for="price">Prix</label>
-                            <input type="number" name="price" value="{{ $item->price }}">
+                            <input type="number" name="price" value="{{ $item->price }}" required>
                         </div>
                         <div>
                             <label for="category_id">Catégorie</label>
-                            <select name="category_id">
+                            <select name="category_id" required>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div>
+                            <label for="is_active">Actif</label>
+                            <input type="checkbox" name="is_active" {{ $item->is_active ? 'checked' : '' }}>
                         </div>
                         <button type="submit">Modifier</button>
                     </form>
