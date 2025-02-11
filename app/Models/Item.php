@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Items extends Model
+class Item extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'cost', 'price', 'is_active', 'category_id'];
 
     public function category()
     {
-        return $this->belongsTo(Categories::class);
+        return $this->belongsTo(Category::class);
     }
 }

@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Restaurants extends Model
+class Restaurant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
 
     public function categories()
     {
-        return $this->hasMany(Categories::class);
+        return $this->hasMany(Category::class);
     }
 }

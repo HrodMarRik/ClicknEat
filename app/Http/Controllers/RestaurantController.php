@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorerestaurantsRequest;
-use App\Http\Requests\UpdaterestaurantsRequest;
-use App\Models\restaurants;
+use App\Http\Requests\StoreRestaurantRequest;
+use App\Http\Requests\UpdateRestaurantRequest;
+use App\Models\Restaurant;
 
-class RestaurantsController extends Controller
+class RestaurantController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('restaurants.index', ['restaurants' => restaurants::all()]);
+        return view('restaurants.index', ['restaurants' => Restaurant::all()]);
     }
 
     /**
@@ -27,43 +27,43 @@ class RestaurantsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorerestaurantsRequest $request)
+    public function store(StoreRestaurantRequest $request)
     {
-        restaurants::create($request->all());
+        Restaurant::create($request->all());
         return redirect()->route('restaurants.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(restaurants $restaurants)
+    public function show(Restaurant $restaurant)
     {
-        return view('restaurants.show', ['restaurants' => $restaurants]);
+        return view('restaurants.show', ['restaurant' => $restaurant]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(restaurants $restaurants)
+    public function edit(Restaurant $restaurant)
     {
-        return view('restaurants.edit', ['restaurants' => $restaurants]);
+        return view('restaurants.edit', ['restaurant' => $restaurant]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdaterestaurantsRequest $request, restaurants $restaurants)
+    public function update(UpdateRestaurantRequest $request, Restaurant $restaurant)
     {
-        $restaurants->update($request->all());
+        $restaurant->update($request->all());
         return redirect()->route('restaurants.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(restaurants $restaurants)
+    public function destroy(Restaurant $restaurant)
     {
-        $restaurants->delete();
+        $restaurant->delete();
         return redirect()->route('restaurants.index');
     }
 }

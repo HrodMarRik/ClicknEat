@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorecategoriesRequest;
-use App\Http\Requests\UpdatecategoriesRequest;
-use App\Models\Categories;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Models\Category;
 
-class CategoriesController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('categories.index', ['categories' => Categories::all()]);
+        return view('categories.index', ['categories' => Category::all()]);
     }
 
     /**
@@ -27,43 +27,43 @@ class CategoriesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorecategoriesRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
-        Categories::create($request->all());
+        Category::create($request->all());
         return redirect()->route('categories.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Categories $categories)
+    public function show(Category $category)
     {
-        return view('categories.show', ['categories' => $categories]);
+        return view('categories.show', ['category' => $category]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Categories $categories)
+    public function edit(Category $category)
     {
-        return view('categories.edit', ['categories' => $categories]);
+        return view('categories.edit', ['category' => $category]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatecategoriesRequest $request, Categories $categories)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $categories->update($request->all());
+        $category->update($request->all());
         return redirect()->route('categories.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categories $categories)
+    public function destroy(Category $category)
     {
-        $categories->delete();
+        $category->delete();
         return redirect()->route('categories.index');
     }
 }
