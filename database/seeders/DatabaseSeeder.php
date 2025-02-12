@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RestaurantSeeder::class,
-            CategorieSeeder::class,
+            CategorySeeder::class,
             ItemSeeder::class,
         ]);
     }
