@@ -21,7 +21,7 @@ class ItemFactory extends Factory
             'cost' => $this->faker->randomNumber(),
             'price' => $this->faker->randomNumber(),
             'is_active' => $this->faker->boolean(),
-            'category_id' => \App\Models\Categorie::inRandomOrder()->first()->id,
+            'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
         ];
     }
 }
