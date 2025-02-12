@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
-class CategoriesFactory extends Factory
+class CategorieFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class CategoriesFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'restaurant_id' => \App\Models\Restaurants::inRandomOrder()->first()->id,
+            'restaurant_id' => \App\Models\Restaurant::inRandomOrder()->first()->id,
         ];
     }
 }
