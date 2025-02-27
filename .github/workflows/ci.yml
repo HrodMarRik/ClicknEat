@@ -1,0 +1,47 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Étape 1: Vérifier le code depuis le dépôt
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Étape 2: Installer PHP et ses dépendances
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'  # Remplace par la version PHP que tu utilises
+
+    - name: Install Composer
+      run: |
+        curl -sS https://getcomposer.org/installer | php
+        sudo mv composer.phar /usr/local/bin/composer
+
+    - name: Install dependencies
+      run: |
+        composer install --no-dev --optimize-autoloader
+
+    # Étape 3: Déployer le code sur ton VPS
+    - name: Deploy to VPS
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@your_server_ip << 'EOF'
+          cd /var/www/html/ClicknEat
+          git pull origin main
+          composer install --no-dev --optimize-autoloader
+          php artisan migrate --force  # Si tu application a besoin de migrations
+          sudo systemctl restart nginx  # Redémarrer Nginx ou PHP-FPM si nécessaire
+        EOF
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    # Étape 4: Confirmation de déploiement réussi
+    - name: Deployment completed
+      run: echo "Deployment successful!"
