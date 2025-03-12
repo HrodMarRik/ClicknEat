@@ -1,0 +1,141 @@
+/* Base styles */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom styles */
+.btn {
+    @apply inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150;
+}
+
+.btn-secondary {
+    @apply inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-800 uppercase tracking-widest hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring ring-gray-200 disabled:opacity-25 transition ease-in-out duration-150;
+}
+
+.btn-danger {
+    @apply inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150;
+}
+
+.card {
+    @apply bg-white overflow-hidden shadow-sm sm:rounded-lg;
+}
+
+.card-header {
+    @apply p-6 bg-white border-b border-gray-200 flex justify-between items-center;
+}
+
+.card-body {
+    @apply p-6 bg-white;
+}
+
+.form-input {
+    @apply rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+}
+
+.form-select {
+    @apply rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+}
+
+.table {
+    @apply min-w-full bg-white;
+}
+
+.table th {
+    @apply py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.table td {
+    @apply py-4 px-6 text-sm text-gray-500;
+}
+
+.table tr {
+    @apply hover:bg-gray-50;
+}
+
+.table tbody {
+    @apply divide-y divide-gray-200;
+}
+
+.alert {
+    @apply p-4 mb-6 rounded-md;
+}
+
+.alert-success {
+    @apply bg-green-100 border-l-4 border-green-500 text-green-700;
+}
+
+.alert-danger {
+    @apply bg-red-100 border-l-4 border-red-500 text-red-700;
+}
+
+.alert-warning {
+    @apply bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700;
+}
+
+.alert-info {
+    @apply bg-blue-100 border-l-4 border-blue-500 text-blue-700;
+}
+
+.badge {
+    @apply px-2 inline-flex text-xs leading-5 font-semibold rounded-full;
+}
+
+.badge-success {
+    @apply bg-green-100 text-green-800;
+}
+
+.badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge-info {
+    @apply bg-blue-100 text-blue-800;
+}
+
+.badge-danger {
+    @apply bg-red-100 text-red-800;
+}
+
+.badge-secondary {
+    @apply bg-gray-100 text-gray-800;
+}
+
+.badge-primary {
+    @apply bg-indigo-100 text-indigo-800;
+}
+
+.badge-purple {
+    @apply bg-purple-100 text-purple-800;
+}
+
+/* Navigation */
+.nav-link {
+    @apply text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium;
+}
+
+.nav-link-active {
+    @apply text-indigo-600 hover:text-indigo-900 px-3 py-2 rounded-md text-sm font-medium;
+}
+
+/* Pagination */
+.pagination {
+    @apply flex justify-center mt-4;
+}
+
+.pagination > div {
+    @apply inline-flex shadow-sm;
+}
+
+/* Responsive utilities */
+.container-fluid {
+    @apply container mx-auto px-4 py-8;
+}
+
+/* Grid system */
+.row {
+    @apply flex flex-wrap -mx-4;
+}
+
+.col {
+    @apply px-4;
+}
