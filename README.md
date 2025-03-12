@@ -1,4 +1,4 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><img src="https://via.placeholder.com/400x100.png?text=FoodExpress" width="400" alt="FoodExpress Logo"></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
@@ -7,98 +7,76 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# FoodExpress - Projet BTS SIO SLAM
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Présentation du projet
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+FoodExpress est une application web de réservation et commande de repas en ligne développée dans le cadre du BTS SIO option SLAM. Cette plateforme permet aux clients de réserver une table dans un restaurant et de commander leur repas à l'avance, afin que celui-ci soit prêt dès leur arrivée, optimisant ainsi l'expérience client et la gestion des restaurants.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Contexte professionnel
 
-## Learning Laravel
+Ce projet répond à une demande croissante dans le secteur de la restauration pour des solutions numériques permettant d'optimiser la gestion des établissements et d'améliorer l'expérience client. Dans un contexte post-pandémique où la digitalisation des services est devenue essentielle, FoodExpress offre une solution complète pour connecter les restaurants à leur clientèle.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Compétences mises en œuvre
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Ce projet mobilise plusieurs compétences du référentiel BTS SIO SLAM :
+- **Développement d'applications** : Conception et développement d'une application web complète
+- **Gestion de projet** : Planification, organisation et suivi du développement
+- **Base de données** : Conception et manipulation d'une base de données relationnelle
+- **Cybersécurité** : Mise en place d'un système d'authentification sécurisé
+- **Intégration web** : Développement d'interfaces responsives et ergonomiques
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-# FoodExpress
-
-FoodExpress est une plateforme de livraison de nourriture en ligne qui connecte les clients avec leurs restaurants préférés.
-
-## Fonctionnalités
+## Fonctionnalités principales
 
 ### Pour les clients
-- Parcourir les restaurants par catégorie, localisation ou évaluation
-- Commander des plats en ligne
-- Suivre l'état des commandes en temps réel
-- Historique des commandes et récommande facile
-- Paiement sécurisé par carte bancaire
+- Création de compte et authentification sécurisée
+- Recherche de restaurants par catégorie, localisation ou évaluation
+- Réservation de table avec choix de date et heure
+- Commande de plats en ligne avec personnalisation
+- Paiement sécurisé via Stripe
+- Suivi en temps réel de l'état des commandes
+- Historique des commandes et réservations
 
 ### Pour les restaurateurs
-- Tableau de bord pour gérer le restaurant
-- Gestion des menus et des plats
-- Suivi des commandes et mise à jour des statuts
-- Rapports de ventes et d'activité
+- Tableau de bord de gestion personnalisé
+- Gestion des menus, plats et catégories
+- Configuration des horaires d'ouverture
+- Suivi et gestion des réservations et commandes
+- Statistiques et rapports d'activité
+- Personnalisation de la présentation de leur établissement
 
 ### Pour les administrateurs
-- Gestion complète des utilisateurs
-- Supervision des restaurants
-- Suivi des commandes sur la plateforme
-- Statistiques et rapports
+- Gestion complète des utilisateurs et de leurs droits
+- Supervision de l'ensemble des restaurants
+- Tableaux de bord analytiques
+- Gestion des paramètres globaux de l'application
 
 ## Technologies utilisées
 
-- **Backend**: Laravel 10 (PHP)
-- **Frontend**: Blade, JavaScript, CSS
-- **Base de données**: MySQL
-- **Paiement**: Stripe API
-- **Authentification**: Laravel Breeze
+- **Backend** : Laravel 10 (PHP 8.2)
+- **Frontend** : Blade, JavaScript, CSS, Bootstrap 5
+- **Base de données** : MySQL
+- **Authentification** : Laravel Breeze
+- **Paiement** : API Stripe (via Laravel Cashier)
+- **Déploiement** : Git, GitHub Actions (CI/CD)
+- **Sécurité** : HTTPS, CSRF protection, validation des données
 
-## Installation
+## Architecture technique
+
+L'application suit le pattern MVC (Modèle-Vue-Contrôleur) de Laravel :
+- **Modèles** : Représentation des données et des relations entre elles
+- **Vues** : Templates Blade pour l'affichage des interfaces utilisateur
+- **Contrôleurs** : Gestion de la logique métier et des interactions
+
+## Installation et déploiement
+
+### Prérequis
+- PHP 8.1 ou supérieur
+- Composer
+- Node.js et NPM
+- MySQL
+
+### Installation en local
 
 1. Clonez le dépôt
    ```
@@ -131,15 +109,47 @@ FoodExpress est une plateforme de livraison de nourriture en ligne qui connecte 
    STRIPE_SECRET=votre_clé_secrète
    ```
 
-7. Lancez le serveur
+7. Compilez les assets
+   ```
+   npm run dev
+   ```
+
+8. Lancez le serveur
    ```
    php artisan serve
    ```
 
-## Contribuer
+## Documentation
 
-Les contributions sont les bienvenues! N'hésitez pas à ouvrir une issue ou à soumettre une pull request.
+La documentation complète du projet est disponible dans le dossier `/docs` et comprend :
+- Documentation technique
+- Manuel utilisateur
+- Diagrammes UML (cas d'utilisation, classes, séquences)
+- Modèle conceptuel de données
+
+## Tests et qualité
+
+Le projet inclut des tests unitaires et fonctionnels pour garantir la qualité du code :
+```
+php artisan test
+```
+
+## Perspectives d'évolution
+
+- Intégration d'un système de notation et d'avis
+- Application mobile (React Native)
+- Système de fidélité et de promotions
+- Intégration avec des services de livraison
+- Analyse prédictive pour optimiser les stocks et la préparation
+
+## Auteur
+
+[Votre Nom] - BTS SIO SLAM - [Votre établissement]
 
 ## Licence
 
-Ce projet est sous licence [MIT](LICENSE).
+Ce projet est développé dans un cadre éducatif et est soumis à la licence MIT.
+
+---
+
+*Ce projet a été réalisé dans le cadre de l'épreuve E4 du BTS SIO option SLAM.*
