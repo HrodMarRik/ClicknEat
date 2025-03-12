@@ -64,3 +64,82 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# FoodExpress
+
+FoodExpress est une plateforme de livraison de nourriture en ligne qui connecte les clients avec leurs restaurants préférés.
+
+## Fonctionnalités
+
+### Pour les clients
+- Parcourir les restaurants par catégorie, localisation ou évaluation
+- Commander des plats en ligne
+- Suivre l'état des commandes en temps réel
+- Historique des commandes et récommande facile
+- Paiement sécurisé par carte bancaire
+
+### Pour les restaurateurs
+- Tableau de bord pour gérer le restaurant
+- Gestion des menus et des plats
+- Suivi des commandes et mise à jour des statuts
+- Rapports de ventes et d'activité
+
+### Pour les administrateurs
+- Gestion complète des utilisateurs
+- Supervision des restaurants
+- Suivi des commandes sur la plateforme
+- Statistiques et rapports
+
+## Technologies utilisées
+
+- **Backend**: Laravel 10 (PHP)
+- **Frontend**: Blade, JavaScript, CSS
+- **Base de données**: MySQL
+- **Paiement**: Stripe API
+- **Authentification**: Laravel Breeze
+
+## Installation
+
+1. Clonez le dépôt
+   ```
+   git clone https://github.com/votre-nom/foodexpress.git
+   cd foodexpress
+   ```
+
+2. Installez les dépendances
+   ```
+   composer install
+   npm install
+   ```
+
+3. Configurez l'environnement
+   ```
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. Configurez la base de données dans le fichier .env
+
+5. Exécutez les migrations et les seeders
+   ```
+   php artisan migrate --seed
+   ```
+
+6. Configurez Stripe dans le fichier .env
+   ```
+   STRIPE_KEY=votre_clé_publique
+   STRIPE_SECRET=votre_clé_secrète
+   ```
+
+7. Lancez le serveur
+   ```
+   php artisan serve
+   ```
+
+## Contribuer
+
+Les contributions sont les bienvenues! N'hésitez pas à ouvrir une issue ou à soumettre une pull request.
+
+## Licence
+
+Ce projet est sous licence [MIT](LICENSE).
