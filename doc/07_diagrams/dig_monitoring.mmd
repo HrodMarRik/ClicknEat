@@ -1,0 +1,60 @@
+
+graph TB
+    %% Styles
+    classDef app fill:#FFE6CC
+    classDef monitoring fill:#DAE8FC
+    classDef storage fill:#D5E8D4
+    classDef alert fill:#F8CECC
+
+    %% Applications
+    subgraph Applications
+        WebApp[Application Web]:::app
+        MobileApp[Application Mobile]:::app
+        APIServer[Serveurs API]:::app
+        DBServer[Serveurs BD]:::app
+    end
+
+    %% Collecte de métriques
+    subgraph MetricsCollection[Collecte de métriques]
+        Prometheus[Prometheus]:::monitoring
+        StatsD[StatsD]:::monitoring
+        Telegraf[Telegraf]:::monitoring
+    end
+
+    %% Logging
+    subgraph Logging
+        Logstash[Logstash]:::monitoring
+        Fluentd[Fluentd]:::monitoring
+        ElasticSearch[ElasticSearch]:::storage
+    end
+
+    %% Visualisation
+    subgraph Visualization[Visualisation]
+        Grafana[Grafana]:::monitoring
+        Kibana[Kibana]:::monitoring
+    end
+
+    %% Alerting
+    subgraph Alerting[Alertes]
+        AlertManager[Alert Manager]:::alert
+        PagerDuty[PagerDuty]:::alert
+        Slack[Slack]:::alert
+    end
+
+    %% Stockage
+    subgraph Storage[Stockage]
+        TimescaleDB[TimescaleDB]:::storage
+        S3[S3 Archives]:::storage
+    end
+
+    %% Relations
+    Applications --> MetricsCollection
+    Applications --> Logging
+    MetricsCollection --> TimescaleDB
+    Logging --> ElasticSearch
+    TimescaleDB --> Grafana
+    ElasticSearch --> Kibana
+    MetricsCollection --> AlertManager
+    AlertManager --> PagerDuty
+    AlertManager --> Slack
+    ElasticSearch --> S3

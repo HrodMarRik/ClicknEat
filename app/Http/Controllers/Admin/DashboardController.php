@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -20,22 +21,60 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Statistiques
-        $totalUsers = User::count();
-        $totalRestaurants = Restaurant::count();
-        $totalOrders = Order::count();
+        // Statistiques générales
+        $stats = [
+            'users' => User::count(),
+            'restaurants' => Restaurant::count(),
+            'orders' => Order::count(),
+            'revenue' => Order::where('status', 'delivered')->sum('total'),
+        ];
 
-        // Commandes récentes
+        // Commandes récentes avec possibilité de modification
         $recentOrders = Order::with(['user', 'restaurant'])
             ->orderBy('created_at', 'desc')
-            ->limit(10)
+            ->take(10)
             ->get();
 
+        // Statuts pour l'affichage et la modification
+        $statuses = [
+            'pending' => 'En attente',
+            'preparing' => 'En préparation',
+            'ready' => 'Prêt',
+            'delivering' => 'En livraison',
+            'delivered' => 'Livré',
+            'cancelled' => 'Annulé',
+        ];
+
+        // Restaurants les plus populaires
+        $popularRestaurants = Restaurant::withCount('orders')
+            ->orderBy('orders_count', 'desc')
+            ->take(5)
+            ->get();
+
+        // Utilisateurs les plus actifs
+        $activeUsers = User::where('role', 'client')
+            ->withCount('orders')
+            ->orderBy('orders_count', 'desc')
+            ->take(5)
+            ->get();
+
+        // Revenus par mois (pour le graphique)
+        $revenueByMonth = Order::where('status', 'delivered')
+            ->select(DB::raw('MONTH(created_at) as month'), DB::raw('YEAR(created_at) as year'), DB::raw('SUM(total) as total'))
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->take(6)
+            ->get()
+            ->reverse();
+
         return view('admin.dashboard', compact(
-            'totalUsers',
-            'totalRestaurants',
-            'totalOrders',
-            'recentOrders'
+            'stats',
+            'recentOrders',
+            'statuses',
+            'popularRestaurants',
+            'activeUsers',
+            'revenueByMonth'
         ));
     }
 

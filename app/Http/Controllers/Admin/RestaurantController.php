@@ -56,30 +56,34 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'description' => 'required|string',
             'address' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'postal_code' => 'required|string|max:20',
             'phone' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'website' => 'nullable|url|max:255',
-            'image' => 'nullable|image|max:2048',
-            'is_active' => 'boolean',
             'delivery_fee' => 'required|numeric|min:0',
             'minimum_order' => 'required|numeric|min:0',
-            'delivery_time' => 'required|integer|min:0',
+            'delivery_time' => 'required|integer|min:1',
         ]);
 
-        $data = $request->except('image');
-
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('restaurants', 'public');
-        }
-
-        $restaurant = Restaurant::create($data);
+        $restaurant = new Restaurant();
+        $restaurant->user_id = $request->user_id;
+        $restaurant->name = $request->name;
+        $restaurant->email = $request->email;
+        $restaurant->description = $request->description;
+        $restaurant->address = $request->address;
+        $restaurant->city = $request->city;
+        $restaurant->postal_code = $request->postal_code;
+        $restaurant->phone = $request->phone;
+        $restaurant->delivery_fee = $request->delivery_fee;
+        $restaurant->minimum_order = $request->minimum_order;
+        $restaurant->delivery_time = $request->delivery_time;
+        $restaurant->is_active = $request->has('is_active');
+        $restaurant->save();
 
         return redirect()->route('admin.restaurants.index')
             ->with('success', 'Restaurant créé avec succès.');

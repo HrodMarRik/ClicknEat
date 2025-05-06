@@ -133,18 +133,22 @@
                                             <a href="{{ route('admin.restaurants.edit', $restaurant) }}" class="text-yellow-600 hover:text-yellow-900">Éditer</a>
 
                                             @if($restaurant->is_active)
-                                                <form action="{{ route('admin.restaurants.update', $restaurant) }}" method="POST" class="inline">
+                                                <form method="POST" action="{{ route('admin.restaurants.deactivate', $restaurant) }}" class="d-inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <input type="hidden" name="is_active" value="0">
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Êtes-vous sûr de vouloir désactiver ce restaurant ?')">Désactiver</button>
+                                                    <button type="button" class="btn btn-sm btn-warning"
+                                                            onclick="confirmAction('Êtes-vous sûr de vouloir désactiver ce restaurant ?', () => this.closest('form').submit())">
+                                                        <i class="bi bi-x-circle"></i> Désactiver
+                                                    </button>
                                                 </form>
                                             @else
-                                                <form action="{{ route('admin.restaurants.update', $restaurant) }}" method="POST" class="inline">
+                                                <form method="POST" action="{{ route('admin.restaurants.activate', $restaurant) }}" class="d-inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <input type="hidden" name="is_active" value="1">
-                                                    <button type="submit" class="text-green-600 hover:text-green-900">Activer</button>
+                                                    <button type="button" class="btn btn-sm btn-success"
+                                                            onclick="confirmAction('Êtes-vous sûr de vouloir activer ce restaurant ?', () => this.closest('form').submit())">
+                                                        <i class="bi bi-check-circle"></i> Activer
+                                                    </button>
                                                 </form>
                                             @endif
 

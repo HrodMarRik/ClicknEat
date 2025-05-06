@@ -1,0 +1,61 @@
+graph TB
+    %% Styles
+    classDef error fill:#FFE6CC
+    classDef handler fill:#DAE8FC
+    classDef action fill:#D5E8D4
+    classDef notification fill:#F8CECC
+
+    %% Types d'erreurs
+    subgraph Errors[Types d'erreurs]
+        E1[Erreur API]:::error
+        E2[Erreur Base de données]:::error
+        E3[Erreur Paiement]:::error
+        E4[Erreur Réseau]:::error
+        E5[Erreur Application]:::error
+    end
+
+    %% Gestionnaires
+    subgraph Handlers[Gestionnaires d'erreurs]
+        H1[Exception Handler]:::handler
+        H2[Error Logger]:::handler
+        H3[Retry Manager]:::handler
+        H4[Fallback Handler]:::handler
+    end
+
+    %% Actions
+    subgraph Actions[Actions correctives]
+        A1[Retry automatique]:::action
+        A2[Rollback transaction]:::action
+        A3[Circuit Breaker]:::action
+        A4[Cache Fallback]:::action
+    end
+
+    %% Notifications
+    subgraph Notifications[Notifications]
+        N1[Alert DevOps]:::notification
+        N2[Notif utilisateur]:::notification
+        N3[Log erreur]:::notification
+        N4[Ticket support]:::notification
+    end
+
+    %% Relations
+    E1 & E2 & E3 & E4 & E5 --> H1
+    H1 --> H2
+    H2 --> H3
+    H3 --> H4
+
+    H1 --> A1
+    H2 --> A2
+    H3 --> A3
+    H4 --> A4
+
+    H1 --> N1
+    H2 --> N2
+    H3 --> N3
+    H4 --> N4
+
+    %% Flux de récupération
+    A1 --> |Si succès| Success[Reprise normale]
+    A2 --> |Si échec| Escalate[Escalade support]
+    A3 --> |Si ouvert| Normal[Flux normal]
+    A4 --> |Si disponible| Degraded[Mode dégradé]

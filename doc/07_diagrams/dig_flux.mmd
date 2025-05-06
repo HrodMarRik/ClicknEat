@@ -1,0 +1,52 @@
+
+flowchart TD
+    %% Acteurs externes
+    Customer((Client))
+    Restaurant((Restaurant))
+    Driver((Livreur))
+
+    %% Processus principaux
+    subgraph Processus
+        OrderMgmt[Gestion Commandes]
+        RestaurantMgmt[Gestion Restaurants]
+        DeliveryMgmt[Gestion Livraisons]
+        PaymentMgmt[Gestion Paiements]
+        UserMgmt[Gestion Utilisateurs]
+    end
+
+    %% Stockage de données
+    DB_Users[(Base Utilisateurs)]
+    DB_Restaurants[(Base Restaurants)]
+    DB_Orders[(Base Commandes)]
+    DB_Deliveries[(Base Livraisons)]
+    DB_Payments[(Base Paiements)]
+
+    %% Services externes
+    PaymentGW[Passerelle Paiement]
+    GeoService[Service Géolocalisation]
+    NotifService[Service Notifications]
+
+    %% Flux de données
+    Customer --> UserMgmt
+    Customer --> RestaurantMgmt
+    Customer --> OrderMgmt
+    Customer --> PaymentMgmt
+
+    Restaurant --> RestaurantMgmt
+    Restaurant --> OrderMgmt
+    Restaurant --> DeliveryMgmt
+
+    Driver --> UserMgmt
+    Driver --> DeliveryMgmt
+
+    %% Stockage
+    UserMgmt --> DB_Users
+    RestaurantMgmt --> DB_Restaurants
+    OrderMgmt --> DB_Orders
+    DeliveryMgmt --> DB_Deliveries
+    PaymentMgmt --> DB_Payments
+
+    %% Services externes
+    PaymentMgmt --> PaymentGW
+    DeliveryMgmt --> GeoService
+    OrderMgmt --> NotifService

@@ -1,0 +1,64 @@
+erDiagram
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ REVIEWS : writes
+    USERS ||--o{ ADDRESSES : has
+    USERS ||--o{ DELIVERY_DRIVERS : becomes
+
+    RESTAURANTS ||--o{ MENU_ITEMS : offers
+    RESTAURANTS ||--o{ CATEGORIES : has
+    RESTAURANTS ||--o{ ORDERS : receives
+    RESTAURANTS ||--o{ REVIEWS : receives
+
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    ORDERS ||--|| DELIVERIES : has
+    ORDERS ||--|| PAYMENTS : has
+
+    MENU_ITEMS }|--|| CATEGORIES : belongs_to
+    MENU_ITEMS ||--o{ ORDER_ITEMS : included_in
+
+    DELIVERY_DRIVERS ||--o{ DELIVERIES : handles
+
+    USERS {
+        id int PK
+        email string
+        name string
+        phone string
+        type enum
+        created_at datetime
+    }
+
+    RESTAURANTS {
+        id int PK
+        owner_id int FK
+        name string
+        description text
+        address string
+        status enum
+        rating float
+    }
+
+    ORDERS {
+        id int PK
+        user_id int FK
+        restaurant_id int FK
+        status enum
+        total decimal
+        created_at datetime
+    }
+
+    DELIVERIES {
+        id int PK
+        order_id int FK
+        driver_id int FK
+        status enum
+        pickup_time datetime
+        delivery_time datetime
+    }
+
+    PAYMENTS {
+        id int PK
+        order_id int FK
+        amount decimal
+        status enum
+        provider string
+    }

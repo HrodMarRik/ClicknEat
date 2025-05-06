@@ -19,20 +19,16 @@ class Restaurant extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'email',
         'description',
-        'cuisine_type',
         'address',
         'city',
         'postal_code',
         'phone',
-        'email',
-        'website',
-        'image',
-        'is_active',
         'delivery_fee',
         'minimum_order',
         'delivery_time',
-        'opening_hours',
+        'is_active',
     ];
 
     /**

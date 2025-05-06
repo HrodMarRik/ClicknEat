@@ -1,0 +1,56 @@
+graph LR
+    subgraph Couche_Présentation
+        direction LR
+        Web[Interface Web]
+        Mobile[Application Mobile]
+        Admin[Dashboard Admin]
+        Restaurant[Dashboard Restaurant]
+    end
+
+    subgraph Couche_API
+        direction LR
+        REST[API REST]
+        WS[WebSocket]
+        Auth[Authentification]
+    end
+
+    subgraph Couche_Métier
+        direction LR
+        Services[Services Métier]
+        Validation[Validation]
+        Events[Événements]
+    end
+
+    subgraph Couche_Données
+        direction LR
+        Models[Modèles]
+        Repository[Repository]
+        Cache[Cache]
+    end
+
+    subgraph Couche_Infrastructure
+        direction LR
+        DB[(Base de données)]
+        Queue[File d'attente]
+        Storage[Stockage]
+        External[Services externes]
+    end
+
+    %% Relations entre couches
+    Couche_Présentation --> Couche_API
+    Couche_API --> Couche_Métier
+    Couche_Métier --> Couche_Données
+    Couche_Données --> Couche_Infrastructure
+
+    %% Style
+    classDef presentation fill:#FFE6CC
+    classDef api fill:#DAE8FC
+    classDef business fill:#D5E8D4
+    classDef data fill:#F8CECC
+    classDef infra fill:#E1D5E7
+
+    class Web,Mobile,Admin,Restaurant presentation
+    class REST,WS,Auth api
+    class Services,Validation,Events business
+    class Models,Repository,Cache data
+    class DB,Queue,Storage,External infra

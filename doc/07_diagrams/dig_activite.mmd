@@ -1,0 +1,46 @@
+flowchart TD
+    classDef client fill:#FFFFCC
+    classDef restaurant fill:#90EE90
+    classDef system fill:#ADD8E6
+    classDef driver fill:#FFB6C1
+
+    Start((Start))
+    End((End))
+
+    A1[Passe la commande]:::client
+
+    B1[Reçoit la commande]:::restaurant
+    B2[Vérifie les articles]:::restaurant
+    B3{Tous les articles disponibles?}:::restaurant
+    B4[Accepte la commande]:::restaurant
+    B5[Commence la préparation]:::restaurant
+    B6[Contacte le client]:::restaurant
+    B7{Client accepte modifications?}:::restaurant
+
+    C1[Recherche un livreur disponible]:::system
+    C2[Vérifie la distance]:::system
+    C3[Vérifie le type de véhicule]:::system
+    C4[Vérifie les évaluations]:::system
+    C5[Propose la livraison]:::system
+
+    D1{Accepte la livraison?}:::driver
+    D2[Se dirige vers le restaurant]:::driver
+    D3[Notifie son arrivée]:::driver
+
+    Start --> A1
+    A1 --> B1
+    B1 --> B2
+    B2 --> B3
+    B3 -->|Oui| B4
+    B3 -->|Non| B6
+    B4 --> B5
+    B6 --> B7
+    B7 -->|Oui| B5
+    B7 -->|Non| End
+    B5 --> C1
+    C1 --> C2 & C3 & C4
+    C2 & C3 & C4 --> C5
+    C5 --> D1
+    D1 -->|Oui| D2
+    D1 -->|Non| C1
+    D2 --> D3

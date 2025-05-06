@@ -1,0 +1,73 @@
+classDiagram
+    class User {
+        -id: int
+        -name: string
+        -email: string
+        -phone: string
+        +register()
+        +login()
+        +updateProfile()
+    }
+
+    class Restaurant {
+        -id: int
+        -name: string
+        -description: string
+        -address: string
+        -rating: float
+        +updateMenu()
+        +manageOrders()
+        +updateStatus()
+    }
+
+    class Order {
+        -id: int
+        -status: string
+        -total: decimal
+        -created_at: datetime
+        +calculateTotal()
+        +updateStatus()
+        +cancel()
+    }
+
+    class DeliveryDriver {
+        -id: int
+        -vehicle_type: string
+        -current_location: Point
+        -status: string
+        +updateLocation()
+        +acceptDelivery()
+        +completeDelivery()
+    }
+
+    class MenuItem {
+        -id: int
+        -name: string
+        -description: string
+        -price: decimal
+        -category_id: int
+        +updatePrice()
+        +toggleAvailability()
+    }
+
+    class Payment {
+        -id: int
+        -order_id: int
+        -amount: decimal
+        -status: string
+        +process()
+        +refund()
+    }
+
+    %% Relations
+    User "1" --> "*" Order : places
+    Restaurant "1" --> "*" MenuItem : offers
+    Restaurant "1" --> "*" Order : receives
+    Order "1" --> "1" Payment : has
+    DeliveryDriver "1" --> "*" Order : delivers
+    MenuItem "*" --> "1" Category : belongs to
+
+    %% Inheritance
+    Customer --|> User
+    RestaurantOwner --|> User
+    Admin --|> User 

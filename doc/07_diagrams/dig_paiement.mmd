@@ -1,0 +1,39 @@
+
+sequenceDiagram
+    participant C as Client
+    participant A as App
+    participant P as Processeur Paiement
+    participant B as Banque
+    participant R as Restaurant
+    participant S as Système
+
+    Note over C,S: Processus de paiement sécurisé
+
+    C->>A: Valide panier
+    A->>A: Calcule total
+    A->>C: Affiche options paiement
+
+    alt Carte bancaire
+        C->>A: Saisit données carte
+        A->>P: Envoie données cryptées
+        P->>B: Demande autorisation
+        B->>P: Autorise transaction
+        P->>A: Confirme paiement
+    else PayPal
+        C->>A: Choisit PayPal
+        A->>P: Redirige vers PayPal
+        P->>C: Demande authentification
+        C->>P: Confirme paiement
+        P->>A: Notifie succès
+    end
+
+    A->>S: Enregistre transaction
+    S->>R: Notifie nouvelle commande
+    S->>C: Confirme commande
+
+    par Processus parallèles
+        S->>R: Calcule commission
+        S->>B: Programme virement restaurant
+    end
+
+    Note over C,S: Délai de remboursement : 5-10 jours

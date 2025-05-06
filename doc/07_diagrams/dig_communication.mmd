@@ -1,0 +1,42 @@
+graph TB
+    %% Acteurs et Interfaces
+    Customer((Client))
+    Restaurant((Restaurant))
+    Driver((Livreur))
+
+    CustomerUI[Interface Client]
+    RestaurantUI[Interface Restaurant]
+    DriverUI[Interface Livreur]
+
+    %% Contrôleurs
+    OrderCtrl[Contrôleur Commandes]
+    PaymentCtrl[Contrôleur Paiements]
+    DeliveryCtrl[Contrôleur Livraisons]
+    NotifCtrl[Contrôleur Notifications]
+
+    %% Base de données et Queue
+    DB[(Base de données)]
+    Queue[File de messages]
+
+    %% Relations principales
+    Customer --> CustomerUI
+    CustomerUI --> OrderCtrl
+    OrderCtrl --> PaymentCtrl
+    PaymentCtrl --> DB
+    OrderCtrl --> Queue
+    Queue --> RestaurantUI
+    Restaurant --> RestaurantUI
+    RestaurantUI --> OrderCtrl
+    OrderCtrl --> DeliveryCtrl
+    DeliveryCtrl --> Queue
+    Queue --> DriverUI
+    Driver --> DriverUI
+    DriverUI --> DeliveryCtrl
+    DeliveryCtrl --> NotifCtrl
+    NotifCtrl --> Customer & Restaurant & Driver
+
+    %% Notes
+    classDef note fill:#fff,stroke:#333,stroke-dasharray: 5 5
+    class Notes note
+    Notes[Interface web et mobile<br/>pour les clients<br/><br/>Dashboard de gestion<br/>pour les restaurants<br/><br/>Application mobile<br/>pour les livreurs]
+

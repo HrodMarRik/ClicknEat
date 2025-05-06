@@ -1,0 +1,81 @@
+graph TB
+    %% Définition des styles
+    classDef cloud fill:#E1D5E7,stroke:#9673A6
+    classDef node fill:#DAE8FC,stroke:#6C8EBF
+    classDef db fill:#F8CECC,stroke:#B85450
+    classDef service fill:#D5E8D4,stroke:#82B366
+
+    %% Cloud Provider
+    subgraph Cloud["Cloud Provider"]
+        style Cloud fill:#E1D5E7,stroke:#9673A6
+
+        %% Zone de disponibilité 1
+        subgraph Zone1["Zone de disponibilité 1"]
+            LB1[Load Balancer NGINX]
+
+            subgraph WebCluster1["Cluster Web"]
+                Web1[Web Server 1<br/>Laravel + PHP-FPM]
+                Web2[Web Server 2<br/>Laravel + PHP-FPM]
+            end
+
+            subgraph DBCluster1["Cluster Base de données"]
+                Master[(Master DB<br/>PostgreSQL)]
+                Slave1[(Replica DB 1<br/>PostgreSQL)]
+            end
+
+            subgraph Cache1["Services de Cache"]
+                Redis1[(Redis Master)]
+                Redis2[(Redis Replica)]
+            end
+        end
+
+        %% Zone de disponibilité 2
+        subgraph Zone2["Zone de disponibilité 2"]
+            LB2[Load Balancer NGINX]
+
+            subgraph WebCluster2["Cluster Web"]
+                Web3[Web Server 3<br/>Laravel + PHP-FPM]
+                Web4[Web Server 4<br/>Laravel + PHP-FPM]
+            end
+
+            Slave2[(Replica DB 2<br/>PostgreSQL)]
+        end
+
+        %% Services partagés
+        subgraph SharedServices["Services partagés"]
+            RabbitMQ[RabbitMQ Cluster]
+            S3[Object Storage]
+
+            subgraph Monitoring["Services de Monitoring"]
+                Prometheus[Prometheus]
+                Grafana[Grafana]
+                ELK[ELK Stack]
+            end
+        end
+    end
+
+    %% CDN et Clients
+    CDN[CloudFront/Cloudflare]
+    Clients[Navigateurs/Apps Mobiles]
+
+    %% Connexions
+    Clients --> CDN
+    CDN --> LB1 & LB2
+    LB1 --> WebCluster1
+    LB2 --> WebCluster2
+    WebCluster1 --> Master
+    WebCluster2 --> Slave2
+    Master --> Slave1
+    Master --> Slave2
+    WebCluster1 & WebCluster2 --> Redis1
+    Redis1 --> Redis2
+    WebCluster1 & WebCluster2 --> RabbitMQ
+    WebCluster1 & WebCluster2 --> S3
+
+    %% Monitoring
+    WebCluster1 & WebCluster2 & DBCluster1 & SharedServices --> Monitoring
+
+    %% Apply styles
+    class LB1,LB2,Web1,Web2,Web3,Web4 node
+    class Master,Slave1,Slave2,Redis1,Redis2 db
+    class RabbitMQ,S3,Prometheus,Grafana,ELK,CDN service

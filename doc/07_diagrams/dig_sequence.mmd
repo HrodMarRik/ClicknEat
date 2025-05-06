@@ -1,0 +1,28 @@
+
+sequenceDiagram
+    participant C as Client
+    participant S as Système
+    participant R as Restaurant
+    participant D as Livreur
+    participant P as Paiement
+
+    Note over C,P: Processus de commande
+
+    C->>S: Parcourt menu
+    C->>S: Ajoute articles
+    C->>S: Valide commande
+    S->>P: Demande paiement
+    P->>S: Confirme paiement
+    S->>C: Confirme commande
+    S->>R: Envoie commande
+    R->>S: Accepte commande
+    S->>D: Propose livraison
+    D->>S: Accepte livraison
+    D->>R: Arrive restaurant
+    R->>D: Remet commande
+    D->>C: Arrive client
+    C->>S: Confirme réception
+    C->>S: Évalue commande
+
+    Note over C,P: Durée totale moyenne : 40 minutes
+

@@ -91,14 +91,22 @@
 
                                         @if($user->id != auth()->id()) <!-- Ne pas permettre de désactiver son propre compte -->
                                             @if($user->is_active)
-                                                <form action="{{ route('admin.users.deactivate', $user) }}" method="POST" class="inline">
+                                                <form method="POST" action="{{ route('admin.users.deactivate', $user) }}" class="d-inline">
                                                     @csrf
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Êtes-vous sûr de vouloir désactiver cet utilisateur ?')">Désactiver</button>
+                                                    @method('PATCH')
+                                                    <button type="button" class="btn btn-sm btn-warning"
+                                                            onclick="confirmAction('Êtes-vous sûr de vouloir désactiver cet utilisateur ?', () => this.closest('form').submit())">
+                                                        <i class="bi bi-x-circle"></i> Désactiver
+                                                    </button>
                                                 </form>
                                             @else
-                                                <form action="{{ route('admin.users.activate', $user) }}" method="POST" class="inline">
+                                                <form method="POST" action="{{ route('admin.users.activate', $user) }}" class="d-inline">
                                                     @csrf
-                                                    <button type="submit" class="text-green-600 hover:text-green-900">Activer</button>
+                                                    @method('PATCH')
+                                                    <button type="button" class="btn btn-sm btn-success"
+                                                            onclick="confirmAction('Êtes-vous sûr de vouloir activer cet utilisateur ?', () => this.closest('form').submit())">
+                                                        <i class="bi bi-check-circle"></i> Activer
+                                                    </button>
                                                 </form>
                                             @endif
 

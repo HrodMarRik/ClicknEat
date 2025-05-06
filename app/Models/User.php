@@ -51,11 +51,17 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    /**
+     * Relation avec les restaurants (pour les restaurateurs)
+     */
     public function restaurants()
     {
         return $this->hasMany(Restaurant::class);
     }
 
+    /**
+     * Relation avec les commandes (pour les clients)
+     */
     public function orders()
     {
         return $this->hasMany(Order::class);

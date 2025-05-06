@@ -26,21 +26,26 @@ class PaymentController extends Controller
                 ->with('info', 'Cette commande a déjà été payée.');
         }
 
-        $intent = $this->stripe->paymentIntents->create([
-            'amount' => $order->total_price * 100, // Stripe requires amount in cents
-            'currency' => 'eur',
-            'metadata' => [
-                'order_id' => $order->id,
-                'user_id' => auth()->id(),
-            ],
+        // Validation automatique du paiement sans passer par Stripe
+        $order->update([
+            'is_paid' => true,
+            'status' => 'confirmed',
+            'payment_intent_id' => 'AUTO-' . uniqid(), // Identifiant fictif pour le paiement automatique
         ]);
 
-        $order->update(['payment_intent_id' => $intent->id]);
+        // Générer la facture
+        $user = $order->user;
+        if (!$user->hasStripeId()) {
+            $user->createAsStripeCustomer();
+        }
 
-        return view('payments.checkout', [
-            'order' => $order,
-            'intent' => $intent,
-        ]);
+        $invoice = $user->invoiceFor(
+            'Commande #' . $order->id,
+            $order->total_price * 100
+        );
+
+        return redirect()->route('orders.show', $order)
+            ->with('success', 'Paiement validé automatiquement avec succès!');
     }
 
     public function process(Request $request, Order $order)

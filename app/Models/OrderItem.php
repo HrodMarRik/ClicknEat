@@ -15,8 +15,7 @@ class OrderItem extends Model
         'dish_id',
         'quantity',
         'price',
-        'name',
-        'description',
+        'notes',
     ];
 
     protected $casts = [
@@ -25,17 +24,17 @@ class OrderItem extends Model
     ];
 
     /**
-     * Get the order that owns the item.
+     * Relation avec la commande
      */
-    public function order(): BelongsTo
+    public function order()
     {
         return $this->belongsTo(Order::class);
     }
 
     /**
-     * Get the dish that owns the item.
+     * Relation avec le plat
      */
-    public function dish(): BelongsTo
+    public function dish()
     {
         return $this->belongsTo(Dish::class);
     }
@@ -45,6 +44,6 @@ class OrderItem extends Model
      */
     public function getSubtotalAttribute()
     {
-        return $this->quantity * $this->price;
+        return $this->price * $this->quantity;
     }
 }

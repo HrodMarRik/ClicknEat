@@ -1,0 +1,66 @@
+
+stateDiagram-v2
+    [*] --> Panier: Ajout premier article
+
+    state Panier {
+        ModifPanier: Modification panier
+        VerifDispo: Vérification disponibilité
+        ModifPanier --> VerifDispo: Mise à jour
+        VerifDispo --> ModifPanier: Articles indisponibles
+    }
+
+    Panier --> Commandé: Validation commande\net paiement accepté
+
+    state Commandé {
+        AttenteResto: En attente restaurant
+        Refuse: Refusé par restaurant
+        AttenteResto --> Refuse: Refus
+        Refuse --> [*]: Remboursement
+    }
+
+    Commandé --> EnPréparation: Acceptation restaurant
+
+    state EnPréparation {
+        Preparation: Préparation commande
+        RechercheLivreur: Recherche livreur
+        Preparation --> RechercheLivreur: Commande prête
+    }
+
+    EnPréparation --> EnLivraison: Livreur assigné
+
+    state EnLivraison {
+        RouteResto: En route restaurant
+        ArriveResto: Arrivé restaurant
+        Recuperee: Commande récupérée
+        RouteClient: En route client
+        ArriveClient: Arrivé client
+
+        RouteResto --> ArriveResto
+        ArriveResto --> Recuperee
+        Recuperee --> RouteClient
+        RouteClient --> ArriveClient
+    }
+
+    EnLivraison --> Livré: Livraison confirmée
+    EnLivraison --> ProblemeLivraison: Incident signalé
+
+    state Livré {
+        AttenteEval: En attente évaluation
+        Evalue: Évalué
+        AttenteEval --> Evalue: Client évalue
+    }
+
+    state Support {
+        AnalyseProbleme: Analyse problème
+        Resolution: Résolution
+        AnalyseProbleme --> Resolution
+    }
+
+    ProblemeLivraison --> Support: Ticket créé
+    Support --> [*]: Problème résolu
+    Livré --> [*]: Commande terminée
+
+    state Annule
+    Panier --> Annule: Annulation client
+    Commandé --> Annule: Annulation client\nou restaurant
+    Annule --> [*]: Remboursement si payé

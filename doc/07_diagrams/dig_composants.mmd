@@ -1,0 +1,51 @@
+graph TB
+    %% Frontend
+    subgraph Frontend
+        WebApp[Application Web]
+        MobileApp[Application Mobile]
+        API[API REST]
+        WS[WebSocket]
+    end
+
+    %% Backend Services
+    subgraph Services_Métier
+        OrderService[Service Commandes]
+        RestaurantService[Service Restaurants]
+        DeliveryService[Service Livraisons]
+        UserService[Service Utilisateurs]
+        PaymentService[Service Paiements]
+        NotificationService[Service Notifications]
+    end
+
+    %% Infrastructure
+    subgraph Infrastructure
+        DB[(Base de données)]
+        Cache[(Cache Redis)]
+        Queue[File d'attente]
+        Storage[Stockage fichiers]
+    end
+
+    %% External Services
+    subgraph Services_Externes
+        PaymentGateway[Passerelle de paiement]
+        GeoService[Service de géolocalisation]
+        EmailService[Service d'emails]
+        SMSService[Service de SMS]
+        PushNotif[Push Notifications]
+    end
+
+    %% Connections
+    WebApp & MobileApp --> API
+    WebApp & MobileApp --> WS
+    API --> OrderService & RestaurantService & DeliveryService & UserService & PaymentService
+    WS --> NotificationService
+
+    OrderService & RestaurantService & DeliveryService & UserService & PaymentService --> DB
+    OrderService & DeliveryService --> Cache
+    NotificationService & PaymentService --> Queue
+    RestaurantService & UserService --> Storage
+
+    PaymentService --> PaymentGateway
+    DeliveryService --> GeoService
+    NotificationService --> EmailService & SMSService & PushNotif
+

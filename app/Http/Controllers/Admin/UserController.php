@@ -54,6 +54,14 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if ($user->role === 'restaurateur') {
+            $user->load('restaurants');
+        } elseif ($user->role === 'client') {
+            $user->load(['orders' => function($query) {
+                $query->orderBy('created_at', 'desc');
+            }, 'orders.restaurant']);
+        }
+
         return view('admin.users.show', compact('user'));
     }
 
@@ -70,29 +78,34 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|in:admin,restaurateur,user',
+            'role' => 'required|in:admin,restaurateur,client',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'postal_code' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:8|confirmed',
+            'is_active' => 'boolean',
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-        ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->address = $request->address;
+        $user->city = $request->city;
+        $user->postal_code = $request->postal_code;
+        $user->phone = $request->phone;
+        $user->is_active = $request->has('is_active');
 
         if ($request->filled('password')) {
-            $request->validate([
-                'password' => 'string|min:8|confirmed',
-            ]);
-
-            $user->update([
-                'password' => bcrypt($request->password),
-            ]);
+            $user->password = bcrypt($request->password);
         }
 
-        return redirect()->route('admin.users.index')
+        $user->save();
+
+        return redirect()->route('admin.users.show', $user)
             ->with('success', 'Utilisateur mis à jour avec succès.');
     }
 

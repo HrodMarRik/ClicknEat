@@ -12,13 +12,32 @@ class Order extends Model
 {
     use HasFactory;
 
+    // Constantes pour les statuts
+    const STATUS_PENDING = 'pending';
+    const STATUS_PREPARING = 'preparing';
+    const STATUS_READY = 'ready';
+    const STATUS_DELIVERING = 'delivering';
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_CANCELLED = 'cancelled';
+
+    /**
+     * Les statuts possibles pour une commande
+     */
+    public const STATUS_CONFIRMED = 'confirmed';
+
+    /**
+     * Les statuts de paiement possibles
+     */
+    public const PAYMENT_PENDING = 'pending';
+    public const PAYMENT_PAID = 'paid';
+    public const PAYMENT_FAILED = 'failed';
+    public const PAYMENT_REFUNDED = 'refunded';
+
     protected $fillable = [
         'user_id',
         'restaurant_id',
-        'status',
-        'subtotal',
-        'delivery_fee',
         'total',
+        'status',
         'address',
         'city',
         'postal_code',
@@ -28,23 +47,6 @@ class Order extends Model
         'payment_status',
         'payment_method',
     ];
-
-    /**
-     * Les statuts possibles pour une commande
-     */
-    public const STATUS_PENDING = 'pending';
-    public const STATUS_PREPARING = 'preparing';
-    public const STATUS_READY = 'ready';
-    public const STATUS_DELIVERING = 'delivering';
-    public const STATUS_DELIVERED = 'delivered';
-    public const STATUS_CANCELLED = 'cancelled';
-
-    /**
-     * Les statuts de paiement possibles
-     */
-    public const PAYMENT_PENDING = 'pending';
-    public const PAYMENT_PAID = 'paid';
-    public const PAYMENT_FAILED = 'failed';
 
     /**
      * Relation avec l'utilisateur qui a passé la commande
@@ -65,7 +67,7 @@ class Order extends Model
     /**
      * Relation avec les éléments de la commande
      */
-    public function orderItems()
+    public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
@@ -158,5 +160,38 @@ class Order extends Model
     public function review(): HasOne
     {
         return $this->hasOne(Review::class);
+    }
+
+    /**
+     * Vérifie si la commande peut être annulée
+     */
+    public function canBeCancelled()
+    {
+        return in_array($this->status, [
+            self::STATUS_PENDING,
+            self::STATUS_CONFIRMED
+        ]);
+    }
+
+    /**
+     * Vérifie si la commande est en cours
+     */
+    public function isInProgress()
+    {
+        return in_array($this->status, [
+            self::STATUS_PENDING,
+            self::STATUS_CONFIRMED,
+            self::STATUS_PREPARING,
+            self::STATUS_READY,
+            self::STATUS_DELIVERING
+        ]);
+    }
+
+    /**
+     * Vérifie si la commande est terminée
+     */
+    public function isCompleted()
+    {
+        return $this->status === self::STATUS_DELIVERED;
     }
 }

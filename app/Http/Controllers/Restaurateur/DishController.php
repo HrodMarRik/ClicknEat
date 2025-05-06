@@ -76,7 +76,13 @@ class DishController extends Controller
             return $restaurant; // C'est une redirection
         }
 
-        $categories = Category::orderBy('name')->get();
+        // Essayons de récupérer les catégories associées au restaurant
+        $categories = Category::where('restaurant_id', $restaurant->id)->get();
+
+        // Si aucune catégorie n'est trouvée, récupérons toutes les catégories
+        if ($categories->isEmpty()) {
+            $categories = Category::all();
+        }
 
         return view('restaurateur.dishes.create', compact('categories'));
     }

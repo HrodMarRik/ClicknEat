@@ -77,10 +77,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
 
     // Gestion des restaurants
-    Route::resource('restaurants', AdminRestaurantController::class);
+    Route::resource('restaurants', RestaurantController::class);
 
     // Gestion des commandes
-    Route::resource('orders', AdminOrderController::class);
+    Route::resource('orders', OrderController::class);
+
+    // Routes pour les catégories
+    Route::resource('categories', CategoryController::class)->except(['index', 'show']);
+
+    // Routes pour les plats
+    Route::resource('dishes', DishController::class)->except(['index', 'show']);
+
+    // Nouvelle route pour mettre à jour rapidement le statut d'une commande
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
 });
 
 // Routes pour les restaurateurs

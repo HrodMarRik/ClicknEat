@@ -1,0 +1,54 @@
+graph TB
+    %% Styles
+    classDef system fill:#FFE6CC,stroke:#D79B00
+    classDef actor fill:#DAE8FC,stroke:#6C8EBF
+    classDef external fill:#F8CECC,stroke:#B85450
+
+    %% Système principal
+    UberEat[Système UberEat<br/>Plateforme de commande<br/>et livraison de repas]:::system
+
+    %% Acteurs
+    Customer((Client)):::actor
+    Restaurant((Restaurant)):::actor
+    Driver((Livreur)):::actor
+    Support((Support Client)):::actor
+    Admin((Administrateur)):::actor
+
+    %% Systèmes externes
+    Payment[Système de Paiement]:::external
+    Geo[Service de Géolocalisation]:::external
+    Email[Service d'Emails]:::external
+    SMS[Service SMS]:::external
+    Push[Notifications Push]:::external
+    Analytics[Service Analytics]:::external
+    CDN[CDN]:::external
+    Storage[Stockage Cloud]:::external
+
+    %% Infrastructure
+    subgraph Infrastructure
+        DB[(Base de Données)]:::external
+        Cache[(Cache Redis)]:::external
+        Queue[File d'attente]:::external
+    end
+
+    %% Relations avec les acteurs
+    Customer --> |Recherche restaurants<br/>Passe commandes<br/>Suit livraisons| UberEat
+    Restaurant --> |Gère menu<br/>Gère commandes<br/>Suit activité| UberEat
+    Driver --> |Accepte livraisons<br/>Met à jour position| UberEat
+    Support --> |Gère tickets<br/>Résout problèmes| UberEat
+    Admin --> |Configure système<br/>Suit performances| UberEat
+
+    %% Relations avec les systèmes externes
+    UberEat --> Payment
+    UberEat --> Geo
+    UberEat --> Email
+    UberEat --> SMS
+    UberEat --> Push
+    UberEat --> Analytics
+    UberEat --> CDN
+    UberEat --> Storage
+
+    %% Relations avec l'infrastructure
+    UberEat --> DB
+    UberEat --> Cache
+    UberEat --> Queue 

@@ -1,0 +1,70 @@
+
+graph TB
+    %% Styles
+    classDef client fill:#FFE6CC,stroke:#D79B00
+    classDef security fill:#DAE8FC,stroke:#6C8EBF
+    classDef data fill:#D5E8D4,stroke:#82B366
+    classDef external fill:#F8CECC,stroke:#B85450
+
+    %% Client
+    Client((Client)):::client
+
+    %% Couche de sécurité
+    subgraph SecurityLayer[Couche de Sécurité]
+        Firewall[Firewall & WAF]:::security
+        RateLimit[Rate Limiter]:::security
+
+        subgraph Authentication[Authentification]
+            OAuth[OAuth 2.0]:::security
+            JWT[JWT Token]:::security
+            MFA[2FA]:::security
+        end
+
+        subgraph Authorization[Autorisation]
+            RBAC[RBAC]:::security
+            Policies[Policies]:::security
+            ACL[ACL]:::security
+        end
+
+        subgraph Encryption[Chiffrement]
+            SSL[SSL/TLS]:::security
+            DataEncrypt[Chiffrement données]:::security
+            HashPass[Hachage mots de passe]:::security
+        end
+    end
+
+    %% Données sensibles
+    subgraph SensitiveData[Données Sensibles]
+        UserData[(Données utilisateurs)]:::data
+        PaymentData[(Données paiement)]:::data
+        SessionData[(Données session)]:::data
+    end
+
+    %% Services externes
+    subgraph ExternalServices[Services Externes]
+        OAuth2Provider[Fournisseur OAuth]:::external
+        PaymentGateway[Passerelle paiement]:::external
+        SMSProvider[Service SMS 2FA]:::external
+    end
+
+    %% Flux
+    Client --> Firewall
+    Firewall --> RateLimit
+    RateLimit --> Authentication
+    Authentication --> Authorization
+    Authorization --> Encryption
+    Encryption --> SensitiveData
+
+    %% Connexions externes
+    Authentication --> OAuth2Provider
+    PaymentData --> PaymentGateway
+    MFA --> SMSProvider
+
+    %% Légende
+    subgraph Legend[Légende]
+        ClientLegend[Client]:::client
+        SecurityLegend[Sécurité]:::security
+        DataLegend[Données]:::data
+        ExternalLegend[Services externes]:::external
+    end
+
