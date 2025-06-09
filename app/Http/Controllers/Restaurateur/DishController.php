@@ -60,7 +60,7 @@ class DishController extends Controller
         $dishes = Dish::where('restaurant_id', $restaurant->id)
             ->with('category')
             ->orderBy('name')
-            ->get();
+            ->paginate(10);
 
         return view('restaurateur.dishes.index', compact('dishes'));
     }

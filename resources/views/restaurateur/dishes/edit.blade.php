@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-restaurateur-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Modifier un plat') }}
@@ -95,4 +95,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-restaurateur-layout>
