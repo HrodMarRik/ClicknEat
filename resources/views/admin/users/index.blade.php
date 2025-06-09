@@ -1,13 +1,17 @@
-@extends('layouts.app')
+<x-admin-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Gestion des utilisateurs') }}
+        </h2>
+    </x-slot>
 
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-semibold text-gray-800">Gestion des utilisateurs</h2>
-        <a href="{{ route('admin.dashboard') }}" class="text-indigo-600 hover:text-indigo-800">
-            &larr; Retour au tableau de bord
-        </a>
-    </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-6">
+                <a href="{{ route('admin.dashboard') }}" class="text-indigo-600 hover:text-indigo-800">
+                    &larr; Retour au tableau de bord
+                </a>
+            </div>
 
     @if(session('success'))
         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
@@ -129,5 +133,4 @@
             </div>
         </div>
     </div>
-</div>
-@endsection
+</x-admin-layout>

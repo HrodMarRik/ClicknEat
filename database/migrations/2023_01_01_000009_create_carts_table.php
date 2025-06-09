@@ -13,7 +13,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
             $table->decimal('subtotal', 10, 2)->default(0);
-            $table->decimal('delivery_fee', 8, 2)->default(0);
             $table->decimal('total', 10, 2)->default(0);
             $table->timestamps();
         });

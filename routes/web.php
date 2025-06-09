@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RestaurantController as AdminRestaurantController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\DishController as AdminDishController;
 use App\Http\Controllers\Restaurateur\DashboardController as RestaurateurDashboardController;
 use App\Http\Controllers\Restaurateur\RestaurantController as RestaurateurRestaurantController;
 use App\Http\Controllers\Restaurateur\DishController;
@@ -77,19 +79,21 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
 
     // Gestion des restaurants
-    Route::resource('restaurants', RestaurantController::class);
+    Route::resource('restaurants', AdminRestaurantController::class);
+    Route::patch('/restaurants/{restaurant}/activate', [AdminRestaurantController::class, 'activate'])->name('restaurants.activate');
+    Route::patch('/restaurants/{restaurant}/deactivate', [AdminRestaurantController::class, 'deactivate'])->name('restaurants.deactivate');
 
     // Gestion des commandes
-    Route::resource('orders', OrderController::class);
+    Route::resource('orders', AdminOrderController::class);
 
     // Routes pour les catégories
-    Route::resource('categories', CategoryController::class)->except(['index', 'show']);
+    Route::resource('categories', AdminCategoryController::class);
 
     // Routes pour les plats
-    Route::resource('dishes', DishController::class)->except(['index', 'show']);
+    Route::resource('dishes', AdminDishController::class);
 
     // Nouvelle route pour mettre à jour rapidement le statut d'une commande
-    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
 });
 
 // Routes pour les restaurateurs

@@ -36,16 +36,13 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'restaurant_id',
-        'total',
         'status',
-        'address',
-        'city',
-        'postal_code',
-        'phone',
-        'notes',
-        'payment_intent_id',
+        'total_price',
         'payment_status',
         'payment_method',
+        'pickup_time',
+        'special_instructions',
+        'table_number'
     ];
 
     /**

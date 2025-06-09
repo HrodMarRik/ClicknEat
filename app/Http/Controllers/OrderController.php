@@ -35,14 +35,17 @@ class OrderController extends Controller
         return view('orders.create', compact('restaurant', 'cart'));
     }
 
-    public function store(Request $request, Restaurant $restaurant)
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            'reserved_for' => 'required|date|after:now',
+            'restaurant_id' => 'required|exists:restaurants,id',
             'items' => 'required|array',
-            'items.*.id' => 'required|exists:items,id',
+            'items.*.id' => 'required|exists:menu_items,id',
             'items.*.quantity' => 'required|integer|min:1',
-            'items.*.special_instructions' => 'nullable|string',
+            'special_instructions' => 'nullable|string',
+            'pickup_time' => 'required|date|after:now',
+            'table_number' => 'nullable|string',
+            'payment_method' => 'required|string',
         ]);
 
         try {
@@ -52,27 +55,32 @@ class OrderController extends Controller
             $orderItems = [];
 
             foreach ($validated['items'] as $itemData) {
-                $item = Item::findOrFail($itemData['id']);
+                $item = \App\Models\MenuItem::findOrFail($itemData['id']);
                 $itemTotal = $item->price * $itemData['quantity'];
                 $totalPrice += $itemTotal;
 
                 $orderItems[] = [
-                    'item_id' => $item->id,
+                    'menu_item_id' => $item->id,
                     'quantity' => $itemData['quantity'],
                     'price' => $item->price,
+                    'name' => $item->name,
                     'special_instructions' => $itemData['special_instructions'] ?? null,
                 ];
             }
 
             $order = Order::create([
                 'user_id' => auth()->id(),
-                'restaurant_id' => $restaurant->id,
-                'status' => 'pending',
+                'restaurant_id' => $validated['restaurant_id'],
                 'total_price' => $totalPrice,
-                'reserved_for' => $validated['reserved_for'],
+                'special_instructions' => $validated['special_instructions'] ?? null,
+                'pickup_time' => $validated['pickup_time'],
+                'table_number' => $validated['table_number'] ?? null,
+                'payment_method' => $validated['payment_method'],
+                'status' => 'pending',
+                'payment_status' => 'pending',
             ]);
 
-            $order->orderItems()->createMany($orderItems);
+            $order->items()->createMany($orderItems);
 
             DB::commit();
 
@@ -80,7 +88,7 @@ class OrderController extends Controller
             session()->forget('cart');
 
             return redirect()->route('orders.show', $order)
-                ->with('success', 'Commande créée avec succès!');
+                ->with('success', 'Votre commande a été créée avec succès.');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -96,14 +104,14 @@ class OrderController extends Controller
         // Vérifier que l'utilisateur est autorisé à voir cette commande
         $this->authorize('view', $order);
 
-        $order->load(['restaurant', 'orderItems.dish']);
+        $order->load(['restaurant', 'items.dish']);
 
         return view('orders.show', compact('order'));
     }
 
     public function edit(Order $order)
     {
-        $order->load(['restaurant', 'orderItems.item']);
+        $order->load(['restaurant', 'items.item']);
         return view('orders.edit', compact('order'));
     }
 

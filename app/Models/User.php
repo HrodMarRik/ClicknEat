@@ -22,12 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'address',
-        'city',
-        'postal_code',
+        'is_admin',
         'phone',
-        'is_active',
+        'address',
     ];
 
     /**
@@ -48,7 +45,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_active' => 'boolean',
+        'is_admin' => 'boolean',
     ];
 
     /**
@@ -69,7 +66,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role === 'admin';
+        return $this->is_admin === true;
     }
 
     public function isRestaurateur()

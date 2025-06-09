@@ -10,6 +10,19 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     /**
+     * Affiche la liste des catégories
+     */
+    public function index()
+    {
+        $categories = Category::with('restaurant')
+            ->orderBy('restaurant_id')
+            ->orderBy('name')
+            ->paginate(15);
+
+        return view('admin.categories.index', compact('categories'));
+    }
+
+    /**
      * Affiche le formulaire de création d'une catégorie
      */
     public function create(Request $request)

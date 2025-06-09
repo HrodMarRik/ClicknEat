@@ -24,183 +24,166 @@
                 </div>
             @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">Informations de la commande</h3>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm text-gray-600"><span class="font-medium">Client :</span> {{ $order->user->name }}</p>
-                            <p class="text-sm text-gray-600"><span class="font-medium">Email :</span> {{ $order->user->email }}</p>
-                            <p class="text-sm text-gray-600"><span class="font-medium">Téléphone :</span> {{ $order->phone ?? 'Non spécifié' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600"><span class="font-medium">Date :</span> {{ $order->created_at->format('d/m/Y H:i') }}</p>
-                            <p class="text-sm text-gray-600"><span class="font-medium">Adresse :</span> {{ $order->address ?? 'Non spécifiée' }}</p>
-                            <p class="text-sm text-gray-600"><span class="font-medium">Ville :</span> {{ $order->city ?? 'Non spécifiée' }}, {{ $order->postal_code ?? '' }}</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6">
-                        <h4 class="font-medium text-gray-700 mb-2">Statut de la commande</h4>
-                        <div class="flex items-center">
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                @if ($order->status == 'delivered')
-                                    bg-green-100 text-green-800
-                                @elseif ($order->status == 'cancelled')
-                                    bg-red-100 text-red-800
-                                @elseif ($order->status == 'pending')
-                                    bg-yellow-100 text-yellow-800
-                                @elseif ($order->status == 'preparing')
-                                    bg-blue-100 text-blue-800
-                                @elseif ($order->status == 'ready')
-                                    bg-purple-100 text-purple-800
-                                @elseif ($order->status == 'delivering')
-                                    bg-indigo-100 text-indigo-800
-                                @endif
-                            ">
-                                {{ ucfirst($order->status) }}
-                            </span>
-
-                            <form action="{{ route('restaurateur.orders.update', $order) }}" method="POST" class="ml-4">
-                                @csrf
-                                @method('PUT')
-                                <div class="flex items-center">
-                                    <select name="status" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>En attente</option>
-                                        <option value="preparing" {{ $order->status == 'preparing' ? 'selected' : '' }}>En préparation</option>
-                                        <option value="ready" {{ $order->status == 'ready' ? 'selected' : '' }}>Prête</option>
-                                        <option value="delivering" {{ $order->status == 'delivering' ? 'selected' : '' }}>En livraison</option>
-                                        <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Livrée</option>
-                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Annulée</option>
-                                    </select>
-                                    <button type="submit" class="ml-2 inline-flex items-center px-3 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
-                                        Mettre à jour
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="mt-6">
-                        <h4 class="font-medium text-gray-700 mb-2">Informations de paiement</h4>
-                        <p class="text-sm text-gray-600"><span class="font-medium">Statut du paiement :</span>
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                @if ($order->payment_status == 'paid')
-                                    bg-green-100 text-green-800
-                                @elseif ($order->payment_status == 'failed')
-                                    bg-red-100 text-red-800
-                                @else
-                                    bg-yellow-100 text-yellow-800
-                                @endif
-                            ">
-                                {{ ucfirst($order->payment_status) }}
-                            </span>
-                        </p>
-                        @if ($order->payment_intent_id)
-                            <p class="text-sm text-gray-600"><span class="font-medium">ID de paiement :</span> {{ $order->payment_intent_id }}</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">Détails des articles</h3>
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 class="text-2xl font-semibold text-gray-800">Commande #{{ $order->id }}</h2>
+                            <p class="text-gray-600">Passée le {{ $order->created_at->format('d/m/Y à H:i') }}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full
+                                @if($order->status === 'pending') bg-yellow-100 text-yellow-800
+                                @elseif($order->status === 'preparing') bg-blue-100 text-blue-800
+                                @elseif($order->status === 'ready') bg-green-100 text-green-800
+                                @elseif($order->status === 'delivered') bg-gray-100 text-gray-800
+                                @else bg-red-100 text-red-800
+                                @endif">
+                                @switch($order->status)
+                                    @case('pending')
+                                        En attente
+                                        @break
+                                    @case('preparing')
+                                        En préparation
+                                        @break
+                                    @case('ready')
+                                        Prêt
+                                        @break
+                                    @case('delivered')
+                                        Livré
+                                        @break
+                                    @case('cancelled')
+                                        Annulé
+                                        @break
+                                    @default
+                                        {{ $order->status }}
+                                @endswitch
+                            </span>
+                        </div>
+                    </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Plat
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Prix unitaire
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Quantité
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Sous-total
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @if ($order->orderItems && $order->orderItems->count() > 0)
-                                    @foreach ($order->orderItems as $item)
+                    <!-- Informations client -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Informations client</h3>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p><strong>Nom :</strong> {{ $order->user->name }}</p>
+                            <p><strong>Email :</strong> {{ $order->user->email }}</p>
+                            <p><strong>Téléphone :</strong> {{ $order->user->phone }}</p>
+                            <p><strong>Adresse de livraison :</strong> {{ $order->delivery_address }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Articles commandés -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Articles commandés</h3>
+                        <div class="bg-gray-50 rounded-lg overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Article
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Prix unitaire
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Quantité
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Total
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach($order->items as $item)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="flex items-center">
-                                                    @if ($item->dish && $item->dish->image)
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $item->dish->image) }}" alt="{{ $item->dish->name }}">
-                                                        </div>
-                                                    @endif
-                                                    <div class="ml-4">
-                                                        <div class="text-sm font-medium text-gray-900">
-                                                            {{ $item->dish ? $item->dish->name : ($item->name ?? 'Plat supprimé') }}
-                                                        </div>
-                                                        @if ($item->description)
-                                                            <div class="text-sm text-gray-500">
-                                                                {{ $item->description }}
-                                                            </div>
-                                                        @endif
+                                                <div class="text-sm font-medium text-gray-900">{{ $item->name }}</div>
+                                                @if($item->special_instructions)
+                                                    <div class="text-sm text-gray-500">
+                                                        Instructions : {{ $item->special_instructions }}
                                                     </div>
-                                                </div>
+                                                @endif
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">{{ number_format($item->price, 2) }} €</div>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ number_format($item->price, 2) }} €
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">{{ $item->quantity }}</div>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $item->quantity }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">{{ number_format($item->quantity * $item->price, 2) }} €</div>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ number_format($item->price * $item->quantity, 2) }} €
                                             </td>
                                         </tr>
                                     @endforeach
-                                @else
+                                </tbody>
+                                <tfoot class="bg-gray-50">
                                     <tr>
-                                        <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                                            Aucun article trouvé pour cette commande.
+                                        <td colspan="3" class="px-6 py-4 text-sm font-medium text-gray-900 text-right">
+                                            Sous-total
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            {{ number_format($order->subtotal, 2) }} €
                                         </td>
                                     </tr>
-                                @endif
-                            </tbody>
-                            <tfoot>
-                                <tr class="bg-gray-50">
-                                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
-                                        Sous-total
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {{ number_format($order->subtotal ?? 0, 2) }} €
-                                    </td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
-                                        Frais de livraison
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {{ number_format($order->delivery_fee ?? 0, 2) }} €
-                                    </td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
-                                        Total
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {{ number_format($order->total ?? 0, 2) }} €
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                    <tr>
+                                        <td colspan="3" class="px-6 py-4 text-sm font-medium text-gray-900 text-right">
+                                            Frais de livraison
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            {{ number_format($order->delivery_fee, 2) }} €
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="px-6 py-4 text-sm font-bold text-gray-900 text-right">
+                                            Total
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
+                                            {{ number_format($order->total, 2) }} €
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
 
-                    @if ($order->notes)
-                        <div class="mt-6">
-                            <h4 class="font-medium text-gray-700 mb-2">Notes</h4>
-                            <p class="text-sm text-gray-600 p-4 bg-gray-50 rounded">{{ $order->notes }}</p>
+                    <!-- Actions -->
+                    @if($order->status !== 'delivered' && $order->status !== 'cancelled')
+                        <div class="border-t pt-6">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Actions</h3>
+                            <div class="flex space-x-4">
+                                @if($order->status === 'pending')
+                                    <form action="{{ route('restaurateur.orders.update', $order) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="preparing">
+                                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Commencer la préparation
+                                        </button>
+                                    </form>
+                                @elseif($order->status === 'preparing')
+                                    <form action="{{ route('restaurateur.orders.update', $order) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="ready">
+                                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                            Marquer comme prêt
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if($order->status !== 'cancelled')
+                                    <form action="{{ route('restaurateur.orders.update', $order) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="cancelled">
+                                        <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir annuler cette commande ?')"
+                                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                            Annuler la commande
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
                         </div>
                     @endif
                 </div>

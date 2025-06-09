@@ -23,7 +23,7 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Bienvenue, {{ Auth::user()->name }} !</h3>
 
-                    @if(!$restaurant)
+                    @if($restaurants->isEmpty())
                         <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
                             <div class="flex">
                                 <div class="flex-shrink-0">
@@ -45,26 +45,58 @@
                             </a>
                         </div>
                     @else
-                        <p class="mt-1 text-sm text-gray-600">
-                            Votre restaurant : {{ $restaurant->name }}
-                        </p>
+                        @foreach($restaurants as $restaurant)
+                            <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h4 class="text-xl font-semibold text-gray-800">{{ $restaurant->name }}</h4>
+                                    <span class="px-3 py-1 text-sm {{ $restaurant->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} rounded-full">
+                                        {{ $restaurant->is_active ? 'Actif' : 'Inactif' }}
+                                    </span>
+                                </div>
 
-                        <div class="mt-4">
-                            <h4 class="font-medium text-gray-700">Statistiques :</h4>
-                            <ul class="list-disc pl-5 mt-2">
-                                <li>Nombre total de plats : {{ $stats['totalDishes'] ?? 0 }}</li>
-                                <li>Plats disponibles : {{ $stats['availableDishes'] ?? 0 }}</li>
-                                <li>Nombre total de commandes : {{ $stats['totalOrders'] ?? 0 }}</li>
-                                <li>Commandes en attente : {{ $stats['pendingOrders'] ?? 0 }}</li>
-                                <li>Chiffre d'affaires total : {{ number_format($stats['totalRevenue'] ?? 0, 2) }} €</li>
-                            </ul>
-                        </div>
+                                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+                                    <div class="bg-indigo-50 p-4 rounded-lg">
+                                        <h5 class="text-sm font-medium text-indigo-600 mb-2">Total des plats</h5>
+                                        <p class="text-2xl font-bold text-indigo-900">{{ $restaurantsStats[$restaurant->id]['totalDishes'] }}</p>
+                                        <p class="text-sm text-indigo-500">Disponibles : {{ $restaurantsStats[$restaurant->id]['availableDishes'] }}</p>
+                                    </div>
 
-                        <div class="mt-4 flex space-x-4">
-                            <a href="{{ route('restaurateur.restaurant.edit', $restaurant) }}" class="text-indigo-600 hover:text-indigo-900">Gérer mon restaurant</a>
-                            <a href="{{ route('restaurateur.dishes.index') }}" class="text-indigo-600 hover:text-indigo-900">Gérer mes plats</a>
-                            <a href="{{ route('restaurateur.orders.index') }}" class="text-indigo-600 hover:text-indigo-900">Voir les commandes</a>
-                        </div>
+                                    <div class="bg-green-50 p-4 rounded-lg">
+                                        <h5 class="text-sm font-medium text-green-600 mb-2">Total des commandes</h5>
+                                        <p class="text-2xl font-bold text-green-900">{{ $restaurantsStats[$restaurant->id]['totalOrders'] }}</p>
+                                        <p class="text-sm text-green-500">En attente : {{ $restaurantsStats[$restaurant->id]['pendingOrders'] }}</p>
+                                    </div>
+
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h5 class="text-sm font-medium text-blue-600 mb-2">Chiffre d'affaires</h5>
+                                        <p class="text-2xl font-bold text-blue-900">{{ number_format($restaurantsStats[$restaurant->id]['totalRevenue'], 2) }} €</p>
+                                    </div>
+
+                                    <div class="bg-purple-50 p-4 rounded-lg">
+                                        <h5 class="text-sm font-medium text-purple-600 mb-2">Plats disponibles</h5>
+                                        <p class="text-2xl font-bold text-purple-900">{{ $restaurantsStats[$restaurant->id]['availableDishes'] }}</p>
+                                        <p class="text-sm text-purple-500">sur {{ $restaurantsStats[$restaurant->id]['totalDishes'] }}</p>
+                                    </div>
+
+                                    <div class="bg-yellow-50 p-4 rounded-lg">
+                                        <h5 class="text-sm font-medium text-yellow-600 mb-2">Commandes en attente</h5>
+                                        <p class="text-2xl font-bold text-yellow-900">{{ $restaurantsStats[$restaurant->id]['pendingOrders'] }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex space-x-4">
+                                    <a href="{{ route('restaurateur.restaurant.edit', $restaurant) }}" class="text-indigo-600 hover:text-indigo-900">
+                                        <span class="mr-2">→</span>Gérer ce restaurant
+                                    </a>
+                                    <a href="{{ route('restaurateur.dishes.index', ['restaurant' => $restaurant->id]) }}" class="text-indigo-600 hover:text-indigo-900">
+                                        <span class="mr-2">→</span>Gérer les plats
+                                    </a>
+                                    <a href="{{ route('restaurateur.orders.index', ['restaurant' => $restaurant->id]) }}" class="text-indigo-600 hover:text-indigo-900">
+                                        <span class="mr-2">→</span>Voir les commandes
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
                     @endif
                 </div>
             </div>

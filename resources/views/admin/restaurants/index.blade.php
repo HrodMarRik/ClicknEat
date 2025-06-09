@@ -1,13 +1,17 @@
-@extends('layouts.app')
+<x-admin-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Gestion des restaurants') }}
+        </h2>
+    </x-slot>
 
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-semibold text-gray-800">Gestion des restaurants</h2>
-        <a href="{{ route('admin.dashboard') }}" class="text-indigo-600 hover:text-indigo-800">
-            &larr; Retour au tableau de bord
-        </a>
-    </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-6">
+                <a href="{{ route('admin.dashboard') }}" class="text-indigo-600 hover:text-indigo-800">
+                    &larr; Retour au tableau de bord
+                </a>
+            </div>
 
     @if(session('success'))
         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
@@ -133,21 +137,23 @@
                                             <a href="{{ route('admin.restaurants.edit', $restaurant) }}" class="text-yellow-600 hover:text-yellow-900">Éditer</a>
 
                                             @if($restaurant->is_active)
-                                                <form method="POST" action="{{ route('admin.restaurants.deactivate', $restaurant) }}" class="d-inline">
+                                                <form method="POST" action="{{ route('admin.restaurants.deactivate', $restaurant) }}" class="inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="button" class="btn btn-sm btn-warning"
+                                                    <button type="button"
+                                                            class="text-orange-600 hover:text-orange-900"
                                                             onclick="confirmAction('Êtes-vous sûr de vouloir désactiver ce restaurant ?', () => this.closest('form').submit())">
-                                                        <i class="bi bi-x-circle"></i> Désactiver
+                                                        Désactiver
                                                     </button>
                                                 </form>
                                             @else
-                                                <form method="POST" action="{{ route('admin.restaurants.activate', $restaurant) }}" class="d-inline">
+                                                <form method="POST" action="{{ route('admin.restaurants.activate', $restaurant) }}" class="inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="button" class="btn btn-sm btn-success"
+                                                    <button type="button"
+                                                            class="text-green-600 hover:text-green-900"
                                                             onclick="confirmAction('Êtes-vous sûr de vouloir activer ce restaurant ?', () => this.closest('form').submit())">
-                                                        <i class="bi bi-check-circle"></i> Activer
+                                                        Activer
                                                     </button>
                                                 </form>
                                             @endif
@@ -174,6 +180,17 @@
                 </div>
             @endif
         </div>
+            </div>
+        </div>
     </div>
-</div>
-@endsection
+</x-admin-layout>
+
+@push('scripts')
+<script>
+function confirmAction(message, callback) {
+    if (confirm(message)) {
+        callback();
+    }
+}
+</script>
+@endpush

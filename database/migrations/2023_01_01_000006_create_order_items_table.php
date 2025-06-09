@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('dish_id')->nullable()->constrained()->nullOnDelete();
             $table->integer('quantity');
             $table->decimal('price', 8, 2);
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

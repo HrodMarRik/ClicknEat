@@ -1,25 +1,28 @@
-@extends('layouts.admin')
+<x-admin-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Détails de l\'utilisateur') }}
+        </h2>
+    </x-slot>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>{{ __('Détails de l\'utilisateur') }}</span>
-                    <div>
-                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-primary">
-                            <i class="bi bi-pencil"></i> {{ __('Modifier') }}
-                        </a>
-                        <x-delete-form
-                            :route="route('admin.users.destroy', $user)"
-                            message="Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible."
-                        />
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-secondary">
-                            <i class="bi bi-arrow-left"></i> {{ __('Retour') }}
-                        </a>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex space-x-4">
+                            <a href="{{ route('admin.users.edit', $user) }}" class="text-indigo-600 hover:text-indigo-800">
+                                {{ __('Modifier') }}
+                            </a>
+                            <x-delete-form
+                                :route="route('admin.users.destroy', $user)"
+                                message="Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible."
+                            />
+                            <a href="{{ route('admin.users.index') }}" class="text-gray-600 hover:text-gray-800">
+                                &larr; {{ __('Retour') }}
+                            </a>
+                        </div>
                     </div>
-                </div>
 
                 <div class="card-body">
                     <div class="row mb-4">
@@ -174,5 +177,4 @@
             </div>
         </div>
     </div>
-</div>
-@endsection
+</x-admin-layout>

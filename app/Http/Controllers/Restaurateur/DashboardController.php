@@ -23,36 +23,26 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Récupérer le restaurant du restaurateur connecté
-        $restaurant = Restaurant::where('user_id', auth()->id())->first();
+        // Récupérer tous les restaurants du restaurateur connecté avec leurs statistiques
+        $restaurants = Restaurant::where('user_id', auth()->id())
+            ->withCount(['dishes', 'orders'])
+            ->get();
 
-        // Récupérer les statistiques si le restaurant existe
-        $stats = [];
-        $recentOrders = [];
+        $restaurantsStats = [];
 
-        if ($restaurant) {
-            // Statistiques
-            $stats = $this->getRestaurantStats($restaurant);
-
-            // Commandes récentes
-            $recentOrders = Order::where('restaurant_id', $restaurant->id)
-                ->with('user')
-                ->orderBy('created_at', 'desc')
-                ->limit(5)
-                ->get();
+        foreach ($restaurants as $restaurant) {
+            $restaurantsStats[$restaurant->id] = $this->getRestaurantStats($restaurant);
         }
 
         // Débogage
         Log::info('Dashboard data:', [
-            'restaurant' => $restaurant ? $restaurant->toArray() : null,
-            'stats' => $stats,
-            'recentOrders' => $recentOrders->toArray()
+            'restaurants' => $restaurants->toArray(),
+            'restaurantsStats' => $restaurantsStats
         ]);
 
         return view('restaurateur.dashboard', [
-            'restaurant' => $restaurant,
-            'stats' => $stats,
-            'recentOrders' => $recentOrders
+            'restaurants' => $restaurants,
+            'restaurantsStats' => $restaurantsStats
         ]);
     }
 
